@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KOMA BEAUTY — Produits cosmétiques et capillaires, catalogue</title>
+  <meta name="description" content="Catalogue KOMA BEAUTY : savons noirs, ghassoul, huiles, soins capillaires et accessoires inspirés des rituels de beauté marocains. Commande par WhatsApp.">
+  <meta name="theme-color" content="#7d1a3d">
+  <link rel="icon" href="data:,">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#catalogue">Aller au catalogue</a>
+
+  <!-- 1. EN-TÊTE -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#accueil" aria-label="KOMA BEAUTY, retour à l’accueil">
+        <!--
+          LOGO : remplacez le fichier assets/logo-koma-beauty.png par le fichier officiel de la marque.
+          Si l’image est introuvable, le nom « Koma Beauty » s’affiche en texte (voir script.js).
+        -->
+        <img src="assets/logo-koma-beauty.png" alt="Koma Beauty" width="640" height="389">
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="#catalogue">Catalogue</a></li>
+          <li><a href="#categories">Catégories</a></li>
+          <li><a href="#rituel">Rituel hammam</a></li>
+          <li><a href="#a-propos">À propos</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn btn-primary header-contact" href="#contact">Nous contacter</a>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <!-- 2. BANNIÈRE D’ACCUEIL -->
+    <section id="accueil" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h1>Des rituels de soin, du hammam aux cheveux</h1>
+          <p class="lead">
+            Savons noirs, ghassoul, eaux florales, huiles et soins capillaires :
+            parcourez le catalogue KOMA BEAUTY, lisez les conseils d’utilisation
+            de chaque produit et demandez votre commande par WhatsApp.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#catalogue">Voir le catalogue</a>
+            <a class="btn btn-ghost" href="#rituel">Découvrir le rituel hammam</a>
+          </div>
+        </div>
+
+        <!-- Emplacement photo d’ambiance : renseignez CONFIG.heroImage dans script.js -->
+        <div class="hero-arch" id="hero-visual" role="img"
+             aria-label="Emplacement pour une photo d’ambiance de la marque, image temporaire">
+          <p class="hero-arch-caption">
+            Photo de la marque à ajouter ici
+            <span>Image temporaire</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CATÉGORIES -->
+    <section id="categories" class="section">
+      <div class="container">
+        <h2>Choisir par catégorie</h2>
+        <p class="section-intro">Touchez une catégorie pour filtrer le catalogue.</p>
+        <div class="category-grid" id="category-grid"></div>
+      </div>
+    </section>
+
+    <!-- 4, 5. CATALOGUE, RECHERCHE ET FILTRES -->
+    <section id="catalogue" class="section section-tinted">
+      <div class="container">
+        <h2>Le catalogue</h2>
+        <p class="section-intro">
+          Chaque produit a sa fiche : usage, mode d’emploi et précautions.
+          Les informations sont indicatives : suivez toujours l’étiquette du produit vendu.
+        </p>
+
+        <div class="controls">
+          <div class="search">
+            <label for="search-input">Rechercher un produit par son nom</label>
+            <input id="search-input" type="search" placeholder="Par exemple : argan, ghassoul, savon noir" autocomplete="off">
+          </div>
+
+          <div class="filters" role="group" aria-label="Filtrer par catégorie" id="filters"></div>
+        </div>
+
+        <p class="results-status" id="results-status" role="status" aria-live="polite"></p>
+
+        <div class="product-grid" id="product-grid"></div>
+
+        <div class="empty" id="empty-state" hidden>
+          <p>Aucun produit ne correspond à votre recherche.</p>
+          <button class="btn btn-ghost" type="button" id="reset-filters">Tout afficher</button>
+        </div>
+
+        <noscript>
+          <p class="noscript">Le catalogue nécessite JavaScript. Activez-le dans votre navigateur pour afficher les produits.</p>
+        </noscript>
+      </div>
+    </section>
+
+    <!-- 7. RITUEL HAMMAM À LA MAISON -->
+    <section id="rituel" class="section">
+      <div class="container ritual">
+        <div class="ritual-head">
+          <h2>Le rituel hammam à la maison</h2>
+          <p class="section-intro">
+            Un exemple général, à adapter à votre peau et aux étiquettes de vos produits.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <h3>Humidifier la peau</h3>
+            <p>Prenez une douche tiède et humidifiez la peau.</p>
+          </li>
+          <li>
+            <h3>Appliquer le savon noir beldi</h3>
+            <p>Étalez-le sur le corps selon l’étiquette, puis rincez.</p>
+          </li>
+          <li>
+            <h3>Utiliser le gant kessa</h3>
+            <p>Passez-le doucement, sans frotter excessivement une même zone.</p>
+          </li>
+          <li>
+            <h3>Appliquer le ghassoul</h3>
+            <p>Préparé en pâte, puis rincé soigneusement, uniquement si le produit convient à la zone concernée.</p>
+          </li>
+          <li>
+            <h3>Terminer en douceur</h3>
+            <p>Une eau florale cosmétique et quelques gouttes d’huile d’argan, si votre peau les tolère.</p>
+          </li>
+        </ol>
+
+        <aside class="ritual-note" aria-label="Précautions pour le rituel">
+          <p>
+            Une exfoliation douce et occasionnelle suffit généralement. Évitez le gommage sur une peau
+            irritée, abîmée, brûlée par le soleil ou récemment épilée.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 8. À PROPOS -->
+    <section id="a-propos" class="section section-tinted">
+      <div class="container about">
+        <h2>À propos de KOMA BEAUTY</h2>
+        <div>
+          <p>
+            KOMA BEAUTY propose des produits cosmétiques et capillaires : soins du corps pour le rituel
+            hammam, huiles, soins capillaires et accessoires, présentés ici dans un catalogue simple à parcourir.
+          </p>
+          <p>
+            L’histoire de la marque, l’origine des produits, leur fabrication et leurs éventuelles
+            certifications seront ajoutées ici une fois confirmées par KOMA BEAUTY.
+          </p>
+          <p class="provisional">Texte provisoire, à remplacer par la présentation de la marque.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. CONTACT ET COMMANDE -->
+    <section id="contact" class="section">
+      <div class="container contact">
+        <div>
+          <h2>Contact et commande</h2>
+          <p class="section-intro">
+            Ouvrez la fiche d’un produit, puis écrivez-nous sur WhatsApp : le message est prérempli avec
+            le nom du produit. Rien n’est envoyé tant que vous n’avez pas validé le message dans WhatsApp.
+          </p>
+          <p id="price-note" class="small"></p>
+        </div>
+
+        <div class="contact-panel">
+          <div id="contact-actions"></div>
+          <ul class="contact-list" id="contact-list"></ul>
+          <p id="delivery-info" class="small" hidden></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 10. PIED DE PAGE -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p class="footer-brand">Koma Beauty</p>
+        <p class="small">Produits cosmétiques et capillaires</p>
+      </div>
+
+      <nav aria-label="Navigation du pied de page">
+        <ul>
+          <li><a href="#catalogue">Catalogue</a></li>
+          <li><a href="#rituel">Rituel hammam</a></li>
+          <li><a href="#a-propos">À propos</a></li>
+          <li><a href="#contact">Contact et commande</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <ul class="footer-contact" id="footer-contact"></ul>
+      </div>
+    </div>
+    <div class="container">
+      <p class="caution">
+        Les informations sont indicatives. Suivez toujours l’étiquette du produit vendu et arrêtez
+        l’utilisation en cas de réaction. Les conseils d’utilisation ne remplacent pas l’avis d’un
+        professionnel de santé.
+      </p>
+    </div>
+  </footer>
+
+  <!-- FICHE PRODUIT (ouverte par le bouton « Découvrir ») -->
+  <dialog id="product-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-scroll">
+      <button class="dialog-close" type="button" id="dialog-close">Fermer</button>
+      <div class="dialog-grid">
+        <div id="dialog-photo"></div>
+        <div class="dialog-content">
+          <p class="dialog-cat" id="dialog-cat"></p>
+          <h2 id="dialog-title"></h2>
+          <div class="badges" id="dialog-badges"></div>
+          <p class="price" id="dialog-price"></p>
+
+          <h3>À quoi sert ce produit</h3>
+          <p id="dialog-usage"></p>
+
+          <h3>Mode d’emploi</h3>
+          <p id="dialog-mode"></p>
+
+          <h3>Précautions</h3>
+          <p class="precautions" id="dialog-precautions"></p>
+
+          <p class="label-note">
+            Les informations sont indicatives. Suivez toujours l’étiquette du produit vendu et arrêtez
+            l’utilisation en cas de réaction.
+          </p>
+
+          <div id="dialog-actions" class="dialog-actions"></div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</body>
+</html>
