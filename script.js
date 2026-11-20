@@ -14,11 +14,11 @@ const CONFIG = {
   // Un numéro vide est ignoré. Tant qu’aucun numéro n’est renseigné, les boutons de commande
   // sont masqués ou affichent « Contact bientôt disponible ».
   whatsappContacts: [
-    { label: "Sénégal", number: "" },
-    { label: "Maroc", number: "" }
+    { label: "Sénégal", number: "221789924266" },
+
   ],
 
-  currency: "MAD",
+  currency: "FCFA",
 
   // Coordonnées facultatives : elles ne s’affichent que si elles sont renseignées.
   instagramUrl: "", // adresse complète, par exemple https://www.instagram.com/votre-compte
