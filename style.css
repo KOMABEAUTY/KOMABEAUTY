@@ -387,3 +387,15 @@ dialog::backdrop { background: rgba(59, 36, 41, .6); }
   .card .photo { max-width: 210px; margin-inline: auto; }
   .card { text-align: left; }
 }
+
+/* Bouton WhatsApp flottant (visible seulement si un numéro est renseigné) */
+.whatsapp-float {
+  position: fixed; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 60; display: inline-flex; align-items: center; min-height: 48px;
+  padding: .7rem 1.3rem; border-radius: 999px;
+  background: var(--bordeaux); color: var(--creme);
+  border: 2px solid var(--or); font-weight: 600; text-decoration: none;
+  box-shadow: 0 4px 14px rgba(59, 36, 41, .3);
+}
+.whatsapp-float:hover { background: var(--bordeaux-fonce); }
+.contact-panel #contact-actions { display: flex; flex-wrap: wrap; gap: .6rem; }

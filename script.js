@@ -9,9 +9,14 @@
 
 /* ---------- 1. CONFIGURATION (À PERSONNALISER) ---------- */
 const CONFIG = {
-  // Numéro WhatsApp au format international, chiffres uniquement (exemple de format : 212600000000).
-  // Tant qu’il est vide, les boutons de commande sont masqués ou affichent « Contact bientôt disponible ».
-  whatsappNumber: "",
+  // Numéros WhatsApp : format international, chiffres uniquement, sans « + », sans espaces, sans le 0 du début.
+  // Exemples de format : Sénégal 221771234567, Maroc 212612345678.
+  // Un numéro vide est ignoré. Tant qu’aucun numéro n’est renseigné, les boutons de commande
+  // sont masqués ou affichent « Contact bientôt disponible ».
+  whatsappContacts: [
+    { label: "Sénégal", number: "" },
+    { label: "Maroc", number: "" }
+  ],
 
   currency: "MAD",
 
@@ -294,10 +299,14 @@ function priceLabel(productId) {
   return String(price);
 }
 
-/** Lien WhatsApp valide, ou null si le numéro n’est pas configuré. */
-function whatsappUrl(message) {
-  const digits = String(CONFIG.whatsappNumber || "").replace(/\D/g, "");
-  if (digits.length < 8) return null;
+/** Numéros WhatsApp renseignés et valides (au moins 8 chiffres). */
+function whatsappContacts() {
+  return CONFIG.whatsappContacts
+    .map((c) => ({ label: c.label, digits: String(c.number || "").replace(/\D/g, "") }))
+    .filter((c) => c.digits.length >= 8);
+}
+
+function whatsappUrl(digits, message) {
   return "https://wa.me/" + digits + "?text=" + encodeURIComponent(message);
 }
 
@@ -306,16 +315,26 @@ function orderMessage(product) {
     ". Pouvez-vous me confirmer le prix et la disponibilité ?";
 }
 
-/** Bouton « Commander sur WhatsApp » (lien réel) ou null si WhatsApp n’est pas configuré. */
-function orderLink(product, className) {
-  const url = whatsappUrl(orderMessage(product));
-  if (!url) return null;
-  const link = el("a", className, "Commander sur WhatsApp");
-  link.href = url;
+/** Crée un lien WhatsApp réel. Avec plusieurs numéros, le libellé indique le pays. */
+function whatsappLink(contact, message, text, many, className) {
+  const link = el("a", className, many ? text + " " + contact.label : text);
+  link.href = whatsappUrl(contact.digits, message);
   link.target = "_blank";
   link.rel = "noopener noreferrer";
-  link.setAttribute("aria-label", "Commander " + product.name + " sur WhatsApp (ouvre WhatsApp dans un nouvel onglet)");
+  link.setAttribute(
+    "aria-label",
+    (many ? text + " " + contact.label : text) + " (ouvre WhatsApp dans un nouvel onglet)"
+  );
   return link;
+}
+
+/** Boutons « Commander sur WhatsApp » : un par numéro renseigné (liste vide si aucun). */
+function orderLinks(product, className) {
+  const contacts = whatsappContacts();
+  const many = contacts.length > 1;
+  return contacts.map((c) =>
+    whatsappLink(c, orderMessage(product), "Commander sur WhatsApp", many, className)
+  );
 }
 
 /** Emplacement photo : photo fournie si elle existe, sinon espace explicite « Image temporaire ». */
@@ -362,8 +381,10 @@ function renderCard(product) {
   more.addEventListener("click", () => openProduct(product));
   actions.append(more);
 
-  const order = orderLink(product, "btn btn-ghost");
-  if (order) actions.append(order);
+  // Sur la carte, le bouton WhatsApp n'apparaît que s'il y a un seul numéro ;
+  // avec plusieurs numéros, le choix du pays se fait dans la fiche produit.
+  const orders = orderLinks(product, "btn btn-ghost");
+  if (orders.length === 1) actions.append(orders[0]);
 
   card.append(actions);
   return card;
@@ -454,9 +475,9 @@ function openProduct(product) {
 
   const actions = $("#dialog-actions");
   actions.replaceChildren();
-  const order = orderLink(product, "btn btn-primary");
-  if (order) {
-    actions.append(order);
+  const orders = orderLinks(product, "btn btn-primary");
+  if (orders.length > 0) {
+    actions.append(...orders);
   } else {
     const soon = el("button", "btn", "Contact bientôt disponible");
     soon.type = "button";
@@ -478,15 +499,13 @@ function closeDialog() {
 function renderContact() {
   const actions = $("#contact-actions");
   const generic = "Bonjour KOMA BEAUTY, j’aimerais avoir des informations sur vos produits.";
-  const url = whatsappUrl(generic);
+  const contacts = whatsappContacts();
 
-  if (url) {
-    const link = el("a", "btn btn-primary", "Écrire sur WhatsApp");
-    link.href = url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.setAttribute("aria-label", "Écrire sur WhatsApp (ouvre WhatsApp dans un nouvel onglet)");
-    actions.replaceChildren(link);
+  if (contacts.length > 0) {
+    const many = contacts.length > 1;
+    actions.replaceChildren(
+      ...contacts.map((c) => whatsappLink(c, generic, "Écrire sur WhatsApp", many, "btn btn-primary"))
+    );
   } else {
     const soon = el("button", "btn", "Contact bientôt disponible");
     soon.type = "button";
@@ -584,6 +603,25 @@ function initNav() {
   });
 }
 
+/* ---------- Bouton WhatsApp flottant ---------- */
+// Un seul numéro : ouvre WhatsApp directement. Plusieurs : mène à la section contact, où chaque pays a son bouton.
+function renderFloatingWhatsApp() {
+  const contacts = whatsappContacts();
+  if (contacts.length === 0) return;
+
+  const link = el("a", "whatsapp-float", "WhatsApp");
+  if (contacts.length === 1) {
+    link.href = whatsappUrl(contacts[0].digits, "Bonjour KOMA BEAUTY, j’aimerais avoir des informations sur vos produits.");
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", "Nous contacter sur WhatsApp (ouvre WhatsApp dans un nouvel onglet)");
+  } else {
+    link.href = "#contact";
+    link.setAttribute("aria-label", "Voir les contacts WhatsApp");
+  }
+  document.body.append(link);
+}
+
 /* ---------- Démarrage ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   initLogoFallback();
@@ -594,6 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFilters();
   renderProducts();
   renderContact();
+  renderFloatingWhatsApp();
 
   $("#search-input").addEventListener("input", (event) => {
     state.query = event.target.value;
