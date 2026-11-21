@@ -9,26 +9,32 @@
 
 /* ---------- 1. CONFIGURATION (À PERSONNALISER) ---------- */
 const CONFIG = {
-  // Numéros WhatsApp : format international, chiffres uniquement, sans « + », sans espaces, sans le 0 du début.
-  // Exemples de format : Sénégal 221771234567, Maroc 212612345678.
-  // Un numéro vide est ignoré. Tant qu’aucun numéro n’est renseigné, les boutons de commande
-  // sont masqués ou affichent « Contact bientôt disponible ».
+  // Numéro WhatsApp : format international, chiffres uniquement, sans « + », sans espaces, sans le 0 du début.
+  // Exemple de format pour le Sénégal : 221771234567.
+  // Tant qu’il est vide, les boutons de commande sont masqués ou affichent « Contact bientôt disponible ».
+  // (Pour ajouter un second numéro plus tard, copiez la ligne ci-dessous en changeant le label.)
   whatsappContacts: [
-    { label: "Sénégal", number: "221789924266" },
-
+    { label: "Sénégal", number: "221789924266" }
   ],
 
-  currency: "FCFA",
+  currency: "FCFA", // devise affichée après chaque prix (par exemple : 12 000 FCFA)
 
   // Coordonnées facultatives : elles ne s’affichent que si elles sont renseignées.
   instagramUrl: "", // adresse complète, par exemple https://www.instagram.com/votre-compte
   phone: "",
   email: "",
-  deliveryInfo: "", // texte libre : livraison, frais, délais... (rien n’est affiché si vide)
+  // Texte libre : livraison, frais, paiement... (rien n’est affiché si vide)
+  deliveryInfo: "Livraison au Sénégal. Paiement à la livraison, Wave ou Orange Money, confirmé avec vous sur WhatsApp. Les frais de livraison sont confirmés selon votre ville.",
 
-  // Prix : associez l’identifiant du produit à son prix. Sans prix, le site affiche « Prix sur demande ».
-  // Exemple : prices: { "savon-noir-beldi-classique": 45, "huile-d-argan": 120 }
-  prices: {},
+  // Prix : identifiant du produit -> prix (nombre) ou texte libre (par exemple "Dès 3 500 FCFA").
+  // Un produit sans prix affiche « Prix sur demande ».
+  prices: {
+    "huile-d-argan": 5000,
+    "savon-noir-beldi-classique": "Dès 3 500 FCFA",
+    "eau-de-rose": 3500,
+    "huile-de-nigelle": 4000,
+    "huile-de-figue-de-barbarie": 9000
+  },
 
   // Photos : associez l’identifiant du produit au chemin de sa photo (à placer dans le dossier assets/).
   // Exemple : images: { "huile-d-argan": "assets/huile-d-argan.jpg" }
@@ -552,9 +558,12 @@ function renderContact() {
     delivery.hidden = false;
   }
 
-  // Note sur les prix : seulement si aucun prix n’est renseigné
-  const hasPrices = Object.keys(CONFIG.prices).length > 0;
-  $("#price-note").textContent = hasPrices ? "" : "Les prix sont communiqués sur demande.";
+  // Note sur les prix : seulement si certains prix manquent
+  const withoutPrice = PRODUCTS.filter((p) => !CONFIG.prices[p.id]).length;
+  $("#price-note").textContent =
+    withoutPrice === 0 ? "" :
+    withoutPrice === PRODUCTS.length ? "Les prix sont communiqués sur demande." :
+    "Pour les produits sans prix affiché, le prix est communiqué sur demande.";
 }
 
 /* ---------- Logo, bannière et menu mobile ---------- */

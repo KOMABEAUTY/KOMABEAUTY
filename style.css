@@ -399,3 +399,18 @@ dialog::backdrop { background: rgba(59, 36, 41, .6); }
 }
 .whatsapp-float:hover { background: var(--bordeaux-fonce); }
 .contact-panel #contact-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+/* ---------- Questions fréquentes ---------- */
+.faq-list { display: grid; gap: .75rem; max-width: 48rem; margin-top: 1.5rem; }
+.faq-list details {
+  background: var(--creme); border: 1px solid var(--ligne);
+  border-radius: 8px; padding: 0 1.1rem;
+}
+.faq-list summary {
+  display: flex; align-items: center; gap: 1rem; min-height: 52px;
+  cursor: pointer; font-weight: 600; color: var(--bordeaux); list-style: none;
+}
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; margin-left: auto; font-size: 1.5rem; line-height: 1; }
+.faq-list details[open] summary::after { content: "–"; }
+.faq-list details p { margin: 0 0 1rem; color: var(--brun-doux); }
